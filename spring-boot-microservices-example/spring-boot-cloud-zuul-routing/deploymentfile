@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-zuul-route
+  labels:
+    app: cloud-zuul
+spec:
+  selector:
+    matchLabels:
+      app: cloud-zuul
+  template:
+    metadata:
+      labels:
+        app: cloud-zuul
+    spec:
+      containers:
+      - name: zuul-routing
+        image: docker.io/lohitesh/cloud-zuul-routung
+        ports: 
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloud-zuul-service
+spec:
+  type: NodePort
+  ports:
+  - nodePort: 32006
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: cloud-zuul
